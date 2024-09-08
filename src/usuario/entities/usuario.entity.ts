@@ -1,11 +1,11 @@
-import { Column, DataType, Table } from "sequelize-typescript";
+import { Model, Column, DataType, Table } from "sequelize-typescript";
 
 @Table({
     tableName: 'usuario',
     timestamps: true,
     paranoid: false
 })
-export class Usuario {
+export class Usuario extends Model{
 
     @Column({
         type: DataType.INTEGER,

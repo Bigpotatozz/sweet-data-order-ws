@@ -7,7 +7,7 @@ import * as bcrypt from 'bcryptjs';
 export class UsuarioService {
   async create(createUsuarioDto: CreateUsuarioDto) {
     
-    const salt = await bcry
+    
   }
 
   findAll() {
