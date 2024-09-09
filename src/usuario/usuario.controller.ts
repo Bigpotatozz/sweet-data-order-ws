@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -9,26 +9,52 @@ export class UsuarioController {
 
   @Post('/crearUsuario')
   create(@Body() createUsuarioDto: CreateUsuarioDto) {
-    return this.usuarioService.create(createUsuarioDto);
+    try{
+      return this.usuarioService.create(createUsuarioDto);
+    }catch(error){
+      console.log(error);
+      return 'Ups, ocurrio un error';
+    }
   }
 
-  @Get()
+  @Get('/obtenerUsuarios')
   findAll() {
-    return this.usuarioService.findAll();
+    try{
+      return this.usuarioService.findAll();
+    }catch(error){
+      console.log(error);
+      return 'Ups, ocurrio un error';
+    }
+   
   }
 
-  @Get(':id')
+  @Get('/obtenerUsuario/:id')
   findOne(@Param('id') id: string) {
-    return this.usuarioService.findOne(+id);
+    try{
+      return this.usuarioService.findOne(+id);
+    }catch(error){
+      console.log(error);
+      return 'Ups, ocurrio un error';
+    }
   }
 
-  @Patch(':id')
+  @Put('/modificarUsuario/:id')
   update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuarioService.update(+id, updateUsuarioDto);
+    try{
+      return this.usuarioService.update(+id, updateUsuarioDto);
+    }catch(error){
+      console.log(error);
+      return 'Ups, ocurrio un error';
+    }
   }
 
-  @Delete(':id')
+  @Delete('/eliminarUsuario/:id')
   remove(@Param('id') id: string) {
-    return this.usuarioService.remove(+id);
+    try{
+      return this.usuarioService.remove(+id);
+    }catch(error){
+      console.log(error);
+      return 'Ups, ocurrio un error';
+    }
   }
 }
