@@ -6,11 +6,13 @@ import { ConfigModule } from '@nestjs/config';
 import { Sequelize } from 'sequelize';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Usuario } from './usuario/entities/usuario.entity';
+import { ClienteModule } from './cliente/cliente.module';
+import { Cliente } from './cliente/entities/cliente.entity';
 
 
 
 @Module({
-  imports: [UsuarioModule, 
+  imports: [UsuarioModule, ClienteModule,
     ConfigModule.forRoot({isGlobal: true}),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -19,10 +21,10 @@ import { Usuario } from './usuario/entities/usuario.entity';
       username: process.env.USER,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
-      models: [Usuario],
+      models: [Usuario, Cliente],
       autoLoadModels: true,
       synchronize: true,
-    })
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
