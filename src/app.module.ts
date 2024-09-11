@@ -8,11 +8,13 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { Usuario } from './usuario/entities/usuario.entity';
 import { ClienteModule } from './cliente/cliente.module';
 import { Cliente } from './cliente/entities/cliente.entity';
+import { ProductoModule } from './producto/producto.module';
+import { Producto } from './producto/entities/producto.entity';
 
 
 
 @Module({
-  imports: [UsuarioModule, ClienteModule,
+  imports: [UsuarioModule, ClienteModule, ProductoModule,
     ConfigModule.forRoot({isGlobal: true}),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -21,10 +23,11 @@ import { Cliente } from './cliente/entities/cliente.entity';
       username: process.env.USER,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
-      models: [Usuario, Cliente],
+      models: [Usuario, Cliente, Producto],
       autoLoadModels: true,
       synchronize: true,
     }),
+
   ],
   controllers: [AppController],
   providers: [AppService],
