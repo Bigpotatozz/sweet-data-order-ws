@@ -21,10 +21,6 @@ export class PedidoProductoService {
   async create(products: [CreatePedidoProductoDto], order: CreatePedidoDto) {
     const transaccion = await this.sequelize.transaction();
     try{
-
-      console.log(order, products);
-   
-
       const pedido = await this.pedido.create({
                                         nombre_pedido: order.nombre_pedido,
                                         fecha_alta: new Date(),
@@ -57,22 +53,30 @@ export class PedidoProductoService {
                                                             id_pedido: pedido.id_pedido
         }, {transaction: transaccion});
 
-        const productPrice = await this.producto.findOne({where: {id_producto: detalle.id_producto}});
+        let productPrice = await this.producto.findOne({ attributes: ['precio'], where: {id_producto: detalle.id_producto}, transaction: transaccion} );
+
+        if(!productPrice){
+          return 'Hubo un error'
+        }
 
         cantidad = cantidad + detalle.cantidad;
+
+        console.log(productPrice.precio);
+     
         let subtotal = productPrice.precio * detalle.cantidad;
         
-        total = total + subtotal;
+        total += subtotal;
     
       }
-
-      console.log(total);
-      await this.pedido.update({total: total, total_pares: cantidad}, {where: {id_pedido: pedido.id_pedido}, transaction: transaccion});
+      console.log('Total: ' + total);
+      console.log('Cantidad: ' + cantidad);
+  
+      await this.pedido.update({total_precio: total, total_pares: cantidad}, {where: {id_pedido: pedido.id_pedido}, transaction: transaccion});
 
 
       await transaccion.commit();
 
-      return 'todo nb}}bien'
+      return 'Pedido creado correctamente';
 
 
 
