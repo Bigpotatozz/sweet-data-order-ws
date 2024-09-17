@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from "class-validator";
+import { IsJSON, IsNumber, IsString } from "class-validator";
 
 export class CreatePedidoProductoDto {
     @IsString()
@@ -26,9 +26,11 @@ export class CreatePedidoProductoDto {
     @IsString()
     entre_suela:string;
     @IsNumber()
-    precio:number;
-    @IsNumber()
     cantidad:number;
     @IsString()
     observaciones:string;
+    @IsJSON()
+    numeracion:JSON;
+    @IsNumber()
+    id_producto:number;
 }

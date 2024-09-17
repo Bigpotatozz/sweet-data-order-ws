@@ -2,14 +2,25 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PedidoProductoService } from './pedido_producto.service';
 import { CreatePedidoProductoDto } from './dto/create-pedido_producto.dto';
 import { UpdatePedidoProductoDto } from './dto/update-pedido_producto.dto';
+import { CreatePedidoDto } from 'src/pedido/dto/create-pedido.dto';
 
-@Controller('pedido-producto')
+
+@Controller('pedido')
 export class PedidoProductoController {
   constructor(private readonly pedidoProductoService: PedidoProductoService) {}
 
-  @Post()
-  create(@Body() createPedidoProductoDto: CreatePedidoProductoDto) {
-    return this.pedidoProductoService.create(createPedidoProductoDto);
+  @Post('/crearPedido')
+  async create(@Body() data: {products: [CreatePedidoProductoDto], order: CreatePedidoDto}) {
+
+    try{
+
+      const pedido = await this.pedidoProductoService.create(data.products, data.order);
+      return pedido;
+    }catch(error){
+      console.log(error);
+      return error;
+    }
+ 
   }
 
   @Get()

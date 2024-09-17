@@ -4,12 +4,12 @@ import { PedidoProductoController } from './pedido_producto.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PedidoProducto } from './entities/pedido_producto.entity';
 import { PedidoModule } from 'src/pedido/pedido.module';
-import { NumeracionModule } from 'src/numeracion/numeracion.module';
 import { Pedido } from 'src/pedido/entities/pedido.entity';
-import { Numeracion } from 'src/numeracion/entities/numeracion.entity';
+import { Producto } from 'src/producto/entities/producto.entity';
+
 
 @Module({
-  imports: [SequelizeModule.forFeature([Pedido, PedidoProducto, Numeracion])],
+  imports: [SequelizeModule.forFeature([Pedido, PedidoProducto, Producto])],
   controllers: [PedidoProductoController],
   providers: [PedidoProductoService],
 })

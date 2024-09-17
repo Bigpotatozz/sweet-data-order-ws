@@ -1,7 +1,7 @@
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasOne } from "sequelize-typescript";
 import { Pedido } from "src/pedido/entities/pedido.entity";
 import { Producto } from '../../producto/entities/producto.entity';
-import { Numeracion } from "src/numeracion/entities/numeracion.entity";
+
 
 @Table({
     tableName: 'pedido_producto',
@@ -77,6 +77,11 @@ export class PedidoProducto extends Model {
     })
     observaciones:string;
 
+    @Column({
+        type: DataType.JSONB
+    })
+    numeracion: string;
+
     @ForeignKey(() => Pedido)
     id_pedido: number;
 
@@ -89,8 +94,7 @@ export class PedidoProducto extends Model {
     @BelongsTo(() => Producto)
     Producto: Producto;
 
-    @HasOne(() => Numeracion)
-    numeracion: Numeracion;
+    
 
 
 }
