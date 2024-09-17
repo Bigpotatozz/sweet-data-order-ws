@@ -32,7 +32,7 @@ export class PedidoProductoService {
                                       }, {transaction: transaccion});
 
       let cantidad = 0;
-      let total: 0;
+      let total = 0;
       for(let detalle of products){
         const producto = await this.pedidoProducto.create({chinela: detalle.chinela,
                                                             color: detalle.color,
@@ -60,21 +60,13 @@ export class PedidoProductoService {
         }
 
         cantidad = cantidad + detalle.cantidad;
+        total = total + (productPrice.precio * detalle.cantidad);
 
-        console.log(productPrice.precio);
-     
-        let subtotal = productPrice.precio * detalle.cantidad;
-        
-        total += subtotal;
-    
       }
-      console.log('Total: ' + total);
-      console.log('Cantidad: ' + cantidad);
-  
-      await this.pedido.update({total_precio: total, total_pares: cantidad}, {where: {id_pedido: pedido.id_pedido}, transaction: transaccion});
-
 
       await transaccion.commit();
+
+      await this.pedido.update({total_precio: total, total_pares: cantidad}, {where: {id_pedido: pedido.id_pedido}}); 
 
       return 'Pedido creado correctamente';
 
