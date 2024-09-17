@@ -1,4 +1,5 @@
-import { Model, Column, DataType, Table } from "sequelize-typescript";
+import { Model, Column, DataType, Table, HasMany } from "sequelize-typescript";
+import { Pedido } from "src/pedido/entities/pedido.entity";
 
 @Table({
     tableName: 'usuario',
@@ -64,5 +65,8 @@ export class Usuario extends Model{
         allowNull: false
     })
     estatus: string;
+
+    @HasMany(() => Pedido)
+    pedidos: Pedido[];
 
 }

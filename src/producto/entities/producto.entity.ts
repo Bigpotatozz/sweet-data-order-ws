@@ -1,4 +1,5 @@
-import { Column, DataType, Table, Model } from "sequelize-typescript";
+import { Column, DataType, Table, Model, HasMany } from "sequelize-typescript";
+import { PedidoProducto } from "src/pedido_producto/entities/pedido_producto.entity";
 
 @Table({
     tableName: 'producto',
@@ -26,4 +27,7 @@ export class Producto extends Model{
         type: DataType.STRING
     })
     precio: number
+    
+    @HasMany(() => PedidoProducto)
+    pedido_producto: PedidoProducto[];
 }

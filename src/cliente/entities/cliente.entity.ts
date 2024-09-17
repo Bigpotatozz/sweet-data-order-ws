@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
-import { Column, Table, Model } from "sequelize-typescript";
+import { Column, Table, Model, HasMany } from "sequelize-typescript";
+import { Pedido } from "src/pedido/entities/pedido.entity";
 
 @Table({
     timestamps: false,
@@ -58,4 +59,7 @@ export class Cliente extends Model {
         defaultValue: 'AC'
     })
     estatus: string;
+
+    @HasMany(() => Pedido)
+    pedidos: Pedido[];
 }

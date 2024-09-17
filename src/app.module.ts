@@ -10,11 +10,16 @@ import { ClienteModule } from './cliente/cliente.module';
 import { Cliente } from './cliente/entities/cliente.entity';
 import { ProductoModule } from './producto/producto.module';
 import { Producto } from './producto/entities/producto.entity';
-
+import { PedidoModule } from './pedido/pedido.module';
+import { PedidoProductoModule } from './pedido_producto/pedido_producto.module';
+import { Pedido } from './pedido/entities/pedido.entity';
+import { Numeracion } from './numeracion/entities/numeracion.entity';
+import { NumeracionModule } from './numeracion/numeracion.module';
+import { PedidoProducto } from './pedido_producto/entities/pedido_producto.entity';
 
 
 @Module({
-  imports: [UsuarioModule, ClienteModule, ProductoModule,
+  imports: [
     ConfigModule.forRoot({isGlobal: true}),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -23,10 +28,16 @@ import { Producto } from './producto/entities/producto.entity';
       username: process.env.USER,
       password: process.env.PASSWORD,
       database: process.env.DATABASE,
-      models: [Usuario, Cliente, Producto],
+      models: [Usuario, Cliente, Producto, Pedido, Numeracion, PedidoProducto],
       autoLoadModels: true,
       synchronize: true,
     }),
+    PedidoModule,
+    PedidoProductoModule,
+    NumeracionModule,
+    UsuarioModule, 
+    ClienteModule, 
+    ProductoModule,
 
   ],
   controllers: [AppController],
