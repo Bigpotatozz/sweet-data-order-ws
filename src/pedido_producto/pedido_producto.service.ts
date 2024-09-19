@@ -87,8 +87,34 @@ export class PedidoProductoService {
 
   }
 
-  findAll() {
-    return `This action returns all pedidoProducto`;
+  async findAll(id_usuario: number) {
+    
+    try{
+
+      const pedidos = await this.pedido.findAll({where: {id_usuario: id_usuario}});
+      if(!pedidos){
+        return 'No hay pedidos existentes';
+      }
+      let products = [];
+      for(let pedido of pedidos){
+        const productos = await this.pedidoProducto.findAll({where: {id_pedido: pedido.id_pedido}});
+        products.push(productos);
+      }
+
+      return {
+        pedidos: {
+          pedidos,
+          productos: [products]
+        }
+        
+      };
+     
+
+
+    }catch(error){
+      console.log(error);
+      return error;
+    }
   }
 
   findOne(id: number) {

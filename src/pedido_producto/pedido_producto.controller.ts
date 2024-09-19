@@ -23,9 +23,9 @@ export class PedidoProductoController {
  
   }
 
-  @Get()
-  findAll() {
-    return this.pedidoProductoService.findAll();
+  @Get('/obtenerPedidos/:id')
+  findAll(@Param('id') id: number) {
+    return this.pedidoProductoService.findAll(id);
   }
 
   @Get(':id')
