@@ -64,9 +64,16 @@ export class PedidoProductoService {
 
       }
 
+      console.log(total);
+
+      const search = await this.pedido.findOne({where: {id_pedido: pedido.id_pedido}, transaction: transaccion} );
+      const updatePedido = await search.update({total_pares: cantidad,total: total},{transaction: transaccion});
+      
+
+
       await transaccion.commit();
 
-      await this.pedido.update({total_precio: total, total_pares: cantidad}, {where: {id_pedido: pedido.id_pedido}}); 
+     
 
       return 'Pedido creado correctamente';
 

@@ -14,6 +14,12 @@ export class Pedido extends Model{
         autoIncrement: true,
     })
     id_pedido: number;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false
+    })
+    nombre_pedido: string
     @Column({
         type: DataType.DATE,
         allowNull: false
