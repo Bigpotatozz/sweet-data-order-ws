@@ -146,6 +146,8 @@ export class PedidoProductoService {
       console.log(updatePedidoDto)
       await pedido.update({nombre_pedido: updatePedidoDto.nombre_pedido, fecha_entrega: updatePedidoDto.fecha_entrega},{transaction: transaccion});
 
+      return {message: 'Informacion actualizada correctamente'};
+
       transaccion.commit();
 
       
@@ -154,6 +156,11 @@ export class PedidoProductoService {
       transaccion.rollback();
       return error;
     }
+  }
+
+
+  async updateProducto(){
+
   }
 
   remove(id: number) {
