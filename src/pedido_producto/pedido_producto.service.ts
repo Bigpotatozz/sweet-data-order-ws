@@ -7,6 +7,7 @@ import { PedidoProducto } from './entities/pedido_producto.entity';
 import { CreatePedidoDto } from '../pedido/dto/create-pedido.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { Producto } from 'src/producto/entities/producto.entity';
+import { UpdatePedidoDto } from '../pedido/dto/update-pedido.dto';
 
 @Injectable()
 export class PedidoProductoService {
@@ -92,20 +93,35 @@ export class PedidoProductoService {
     try{
 
       const pedidos = await this.pedido.findAll({where: {id_usuario: id_usuario}});
+
       if(!pedidos){
         return 'No hay pedidos existentes';
       }
+
+
       let products = [];
+
       for(let pedido of pedidos){
         const productos = await this.pedidoProducto.findAll({where: {id_pedido: pedido.id_pedido}});
-        products.push(productos);
+
+        let order = {
+          id_pedido: pedido.id_pedido,
+          nombre_pedido: pedido.nombre_pedido,
+          fecha_alta: pedido.fecha_alta,
+          fecha_entrega: pedido.fecha_entrega,
+          total_pares: pedido.total_pares,
+          total: pedido.total,
+          id_usuario: pedido.id_usuario,
+          id_cliente: pedido.id_cliente,
+
+          productos: productos
+        }
+        products.push(order);
       }
 
       return {
-        pedidos: {
-          pedidos,
-          productos: [products]
-        }
+        
+        pedidos: products
         
       };
      
@@ -117,12 +133,27 @@ export class PedidoProductoService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} pedidoProducto`;
-  }
 
-  update(id: number, updatePedidoProductoDto: UpdatePedidoProductoDto) {
-    return `This action updates a #${id} pedidoProducto`;
+  async update(id: number, updatePedidoDto: UpdatePedidoDto) {
+
+    const transaccion = await this.sequelize.transaction();
+    try{
+      const pedido = await this.pedido.findByPk(id,{transaction: transaccion});
+      if(!pedido){
+        return {message: 'No se encontro el pedido'};
+      }
+
+      console.log(updatePedidoDto)
+      await pedido.update({nombre_pedido: updatePedidoDto.nombre_pedido, fecha_entrega: updatePedidoDto.fecha_entrega},{transaction: transaccion});
+
+      transaccion.commit();
+
+      
+    }catch(error){
+      console.log(error);
+      transaccion.rollback();
+      return error;
+    }
   }
 
   remove(id: number) {
