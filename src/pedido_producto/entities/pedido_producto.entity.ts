@@ -67,10 +67,6 @@ export class PedidoProducto extends Model {
     @Column({
         type: DataType.STRING
     })
-    precio:number;
-    @Column({
-        type: DataType.STRING
-    })
     cantidad:number;
     @Column({
         type: DataType.STRING

@@ -92,7 +92,7 @@ export class PedidoProductoService {
     
     try{
 
-      const pedidos = await this.pedido.findAll({where: {id_usuario: id_usuario}});
+      const pedidos = await this.pedido.findAll({where: {id_usuario: id_usuario, estatus: true}});
 
       if(!pedidos){
         return 'No hay pedidos existentes';
@@ -195,11 +195,6 @@ export class PedidoProductoService {
       transaccion.rollback();
       return error;
     }
-  }
-
-
-  async updateProducto(){
-
   }
 
   remove(id: number) {
