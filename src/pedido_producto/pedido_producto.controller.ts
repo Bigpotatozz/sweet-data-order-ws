@@ -30,11 +30,11 @@ export class PedidoProductoController {
   }
 
   @Put('/modificarPedido/:id_pedido')
-  async update(@Param('id_pedido') id: string, @Body() data: {productos: UpdatePedidoProductoDto, pedido: UpdatePedidoDto}) {
+  async update(@Param('id_pedido') id: string, @Body() data: {productos: UpdatePedidoProductoDto[], pedido: UpdatePedidoDto}) {
 
     try{
-      console.log(data.pedido);
-      const pedido = await this.pedidoProductoService.update(+id,data.pedido);
+      console.log(data.productos);
+      const pedido = await this.pedidoProductoService.update(+id, data.pedido,data.productos);
       return pedido;
     }catch(error){
       console.log(error);

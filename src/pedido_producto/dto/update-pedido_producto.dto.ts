@@ -1,8 +1,11 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreatePedidoProductoDto } from './create-pedido_producto.dto';
-import { IsNumber, IsString } from 'class-validator';
+import { IsJSON, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class UpdatePedidoProductoDto extends PartialType(CreatePedidoProductoDto) {
+    @IsNumber()
+    @IsNotEmpty()
+    id_pedido_producto:number;
     @IsString()
     chinela:string;
     @IsString()
@@ -28,9 +31,9 @@ export class UpdatePedidoProductoDto extends PartialType(CreatePedidoProductoDto
     @IsString()
     entre_suela:string;
     @IsNumber()
-    precio:number;
-    @IsNumber()
     cantidad:number;
+    @IsJSON()
+    numeracion?: JSON;
     @IsString()
     observaciones:string;
 }

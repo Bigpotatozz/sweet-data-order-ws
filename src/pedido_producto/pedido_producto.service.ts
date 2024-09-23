@@ -134,21 +134,60 @@ export class PedidoProductoService {
   }
 
 
-  async update(id: number, updatePedidoDto: UpdatePedidoDto) {
+  async update(id_pedido: number, updatePedidoDto: UpdatePedidoDto, updatePedidoProductoDto: UpdatePedidoProductoDto[]) {
 
     const transaccion = await this.sequelize.transaction();
     try{
-      const pedido = await this.pedido.findByPk(id,{transaction: transaccion});
+      const pedido = await this.pedidoProducto.findAll({where: {id_pedido: id_pedido}, include: [{model: Pedido}, {model: Producto}], transaction: transaccion});
+
       if(!pedido){
         return {message: 'No se encontro el pedido'};
       }
 
-      console.log(updatePedidoDto)
-      await pedido.update({nombre_pedido: updatePedidoDto.nombre_pedido, fecha_entrega: updatePedidoDto.fecha_entrega},{transaction: transaccion});
+      for(let producto of updatePedidoProductoDto){
+        const updated_product = await this.pedidoProducto.update({chinela: producto.chinela,
+                                                            color: producto.color,
+                                                            tubo: producto.tubo,
+                                                            color_tubo: producto.color_tubo,
+                                                            forro: producto.forro,
+                                                            suela: producto.suela,
+                                                            costura: producto.costura,
+                                                            bordado: producto.bordado,
+                                                            ringle: producto.ringle,
+                                                            tacon: producto.tacon,
+                                                            acabado: producto.acabado,
+                                                            entre_suela: producto.entre_suela,
+                                                            cantidad: producto.cantidad,
+                                                            observaciones: producto.observaciones,
+                                                            numeracion: producto.numeracion,
+        }, {where: {id_pedido_producto: producto.id_pedido_producto}, transaction: transaccion});
+      }
 
-      return {message: 'Informacion actualizada correctamente'};
+      const productos =  await this.pedidoProducto.findAll({where: {id_pedido: id_pedido}, transaction: transaccion});
+      let total = 0;
+      let cantidad = 0;
 
+      for(let producto of productos){
+
+        const productPrice = await this.producto.findOne({attributes: ['precio'], where: {id_producto: producto.id_producto}, transaction: transaccion});
+
+        if(!productPrice){
+          return {message: 'No se encontro el producto'};
+        }
+
+        cantidad = cantidad + producto.cantidad;
+        total = total + (productPrice.precio * producto.cantidad);
+      }
+
+      console.log(total, cantidad);
+      const update_pedido = await this.pedido.update({nombre_pedido: updatePedidoDto.nombre_pedido, 
+                                                      fecha_entrega: updatePedidoDto.fecha_entrega,
+                                                      total_pares: cantidad,
+                                                      total: total},{where: {id_pedido: id_pedido}, transaction: transaccion});
+        
       transaccion.commit();
+      return {message: 'Pedido actualizado correctamente'};
+
 
       
     }catch(error){
